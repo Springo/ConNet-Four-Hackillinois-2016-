@@ -129,6 +129,7 @@ public class AIPlayer implements Player {
 	}
 	
 	public void won(int result) {
+		System.out.println(result);
 		for (int i = 0; i < experience.size(); i++) {
 			String key = experience.get(i);
 			if (brain.containsKey(key)) {

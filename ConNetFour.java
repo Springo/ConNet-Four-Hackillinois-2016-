@@ -16,8 +16,8 @@ public class ConNetFour extends JPanel{
 	
 	public ConNetFour(){
 		super(new GridLayout(1,0));
-		player1 = new AIPlayer("player1");
-		player2 = new AIPlayer("player2");
+		player1 = new DefaultPlayer("player1");
+		player2 = new AIPlayer("Janice");
 		board = new int [6][7];
 		for (int i = 0; i < 6; i++)
 			for (int j = 0; j < 7; j++)
@@ -65,13 +65,15 @@ public class ConNetFour extends JPanel{
 			player1.won(0);
 			player2.won(0);
 		}
-		if (playerTurn == 1){
-			player1.won(1);
-			player2.won(-1);
-		}
-		else{
-			player1.won(-1);
-			player2.won(1);
+		else {
+			if (playerTurn == 2){
+				player1.won(1);
+				player2.won(-1);
+			}
+			else{
+				player1.won(-1);
+				player2.won(1);
+			}
 		}
 	}
 	
