@@ -17,19 +17,20 @@ public class AIPlayer implements Player {
 		data = "";
 		for (int i = 0; i < 42; i++)
 			data += "0 ";
+		getBrain(name + "Brain.txt");
 	}
 	
 	//Following methods only for testing.
 	public static void main(String [] args) {
 		AIPlayer p = new AIPlayer("Bob");
-		p.addnew("0 0 0 0 0 ", 10);
-		p.addnew("0 0 0 1 0 ", 9);
-		p.addnew("0 0 1 0 1 ", 8);
+		p.addnew("0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ", -3);
+		p.addnew("0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 ", 3);
+		p.addnew("0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 ", -3);
 		p.writeBrain(p.getName() + "Brain.txt");
 		p.getBrain(p.getName() + "Brain.txt");
-		System.out.println(p.getMap("0 0 0 0 0 "));
-		System.out.println(p.getMap("0 0 0 1 0 "));
-		System.out.println(p.getMap("0 0 1 0 1 "));
+		int[][] testboard = new int[6][7];
+		p.updateData(testboard);
+		System.out.println(p.makeMove());
 	}
 	
 	public void addnew(String key, int input) {
@@ -47,10 +48,12 @@ public class AIPlayer implements Player {
 	
 	public int makeMove() {
 		int heuristic = 0;
-		int bestH = 0;
+		int bestH = -99999;
 		int move = 0;
 		String goodmoves = "";
 		for (int i = 0; i < 7; i++) {
+			if (Integer.parseInt("" + data.charAt(2 * i)) != 0)
+				continue;
 			Integer temp = brain.get(data + i + " ");
 			if (temp == null)
 				heuristic = 0;
@@ -81,6 +84,8 @@ public class AIPlayer implements Player {
 			}
 			br.close();
 		}
+		catch (FileNotFoundException e) {
+		}
 		catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -92,7 +97,7 @@ public class AIPlayer implements Player {
 		File f = new File(filename);
 		try {
 			f.createNewFile();
-			PrintWriter pw = new PrintWriter(new FileOutputStream(f));
+			PrintWriter pw = new PrintWriter(new FileOutputStream(f, false));
 			Iterator it = brain.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry pair = (Map.Entry)it.next();
@@ -100,7 +105,10 @@ public class AIPlayer implements Player {
 				String zeroes = "";
 				for (int i = 0; i < (6 - (Integer.toString(value)).length()); i++)
 					zeroes += "0";
-				pw.println((String)(pair.getKey()) + zeroes + (Integer)(pair.getValue()));
+				if (value >= 0)
+					pw.println((String)(pair.getKey()) + zeroes + (Integer)(pair.getValue()));
+				else
+					pw.println((String)(pair.getKey()) + "-" + zeroes + (0 - (Integer)(pair.getValue())));
 				it.remove();
 			}
 			pw.close();
@@ -118,5 +126,18 @@ public class AIPlayer implements Player {
 				data = data + board[i][j] + " ";
 			}
 		}
+	}
+	
+	public void won(int result) {
+		for (int i = 0; i < experience.size(); i++) {
+			String key = experience.get(i);
+			if (brain.containsKey(key)) {
+				brain.put(key, brain.get(key) + result);
+			}
+			else {
+				brain.put(key, result);
+			}
+		}
+		writeBrain(name + "Brain.txt");
 	}
 }
