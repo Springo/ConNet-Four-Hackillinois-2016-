@@ -23,14 +23,14 @@ public class AIPlayer implements Player {
 	//Following methods only for testing.
 	public static void main(String [] args) {
 		AIPlayer p = new AIPlayer("Bob");
-		p.addnew("0 0 0 0 0 ", 10);
-		p.addnew("0 0 0 1 0 ", 9);
-		p.addnew("0 0 1 0 1 ", 8);
+		p.addnew("0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ", -3);
+		p.addnew("0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 ", 3);
+		p.addnew("0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 ", -3);
 		p.writeBrain(p.getName() + "Brain.txt");
 		p.getBrain(p.getName() + "Brain.txt");
-		System.out.println(p.getMap("0 0 0 0 0 "));
-		System.out.println(p.getMap("0 0 0 1 0 "));
-		System.out.println(p.getMap("0 0 1 0 1 "));
+		int[][] testboard = new int[6][7];
+		p.updateData(testboard);
+		System.out.println(p.makeMove());
 	}
 	
 	public void addnew(String key, int input) {
@@ -82,6 +82,8 @@ public class AIPlayer implements Player {
 			}
 			br.close();
 		}
+		catch (FileNotFoundException e) {
+		}
 		catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -93,7 +95,7 @@ public class AIPlayer implements Player {
 		File f = new File(filename);
 		try {
 			f.createNewFile();
-			PrintWriter pw = new PrintWriter(new FileOutputStream(f));
+			PrintWriter pw = new PrintWriter(new FileOutputStream(f, false));
 			Iterator it = brain.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry pair = (Map.Entry)it.next();
@@ -101,7 +103,10 @@ public class AIPlayer implements Player {
 				String zeroes = "";
 				for (int i = 0; i < (6 - (Integer.toString(value)).length()); i++)
 					zeroes += "0";
-				pw.println((String)(pair.getKey()) + zeroes + (Integer)(pair.getValue()));
+				if (value >= 0)
+					pw.println((String)(pair.getKey()) + zeroes + (Integer)(pair.getValue()));
+				else
+					pw.println((String)(pair.getKey()) + "-" + zeroes + (0 - (Integer)(pair.getValue())));
 				it.remove();
 			}
 			pw.close();
