@@ -48,10 +48,12 @@ public class AIPlayer implements Player {
 	
 	public int makeMove() {
 		int heuristic = 0;
-		int bestH = 0;
+		int bestH = -99999;
 		int move = 0;
 		String goodmoves = "";
 		for (int i = 0; i < 7; i++) {
+			if (Integer.parseInt("" + data.charAt(2 * i)) != 0)
+				continue;
 			Integer temp = brain.get(data + i + " ");
 			if (temp == null)
 				heuristic = 0;

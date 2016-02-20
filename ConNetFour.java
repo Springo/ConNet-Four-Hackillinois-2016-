@@ -16,8 +16,8 @@ public class ConNetFour extends JPanel{
 	
 	public ConNetFour(){
 		super(new GridLayout(1,0));
-		player1 = new DefaultPlayer("player1");
-		player2 = new DefaultPlayer("player2");
+		player1 = new AIPlayer("player1");
+		player2 = new AIPlayer("player2");
 		board = new int [6][7];
 		for (int i = 0; i < 6; i++)
 			for (int j = 0; j < 7; j++)
