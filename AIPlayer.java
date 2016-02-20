@@ -17,6 +17,7 @@ public class AIPlayer implements Player {
 		data = "";
 		for (int i = 0; i < 42; i++)
 			data += "0 ";
+		getBrain(name + "Brain.txt");
 	}
 	
 	//Following methods only for testing.
@@ -120,11 +121,16 @@ public class AIPlayer implements Player {
 		}
 	}
 	
-	public void won(boolean result) {
+	public void won(int result) {
 		for (int i = 0; i < experience.size(); i++) {
-			if (brain.containsKey(experience.get(i))) {
-				
+			String key = experience.get(i);
+			if (brain.containsKey(key)) {
+				brain.put(key, brain.get(key) + result);
+			}
+			else {
+				brain.put(key, result);
 			}
 		}
+		writeBrain(name + "Brain.txt");
 	}
 }
