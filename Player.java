@@ -4,4 +4,5 @@
 public interface Player {
 	String getName();
 	int makeMove();
+	void updateData(int[][] board);
 }
