@@ -6,6 +6,7 @@ import java.util.*;
 
 public class AIPlayer implements Player {
 	private String name;
+	private String data;
 	private Map<String, Integer> brain;
 	private ArrayList<String> experience;
 	
@@ -13,6 +14,9 @@ public class AIPlayer implements Player {
 		this.name = name;
 		brain = new HashMap<String, Integer>();
 		experience = new ArrayList<String>();
+		data = "";
+		for (int i = 0; i < 42; i++)
+			data += "0 ";
 	}
 	
 	//Following methods only for testing.
@@ -42,7 +46,28 @@ public class AIPlayer implements Player {
 	}
 	
 	public int makeMove() {
-		return (int)(Math.random() * 7);
+		int heuristic = 0;
+		int bestH = 0;
+		int move = 0;
+		String goodmoves = "";
+		for (int i = 0; i < 7; i++) {
+			Integer temp = brain.get(data + i + " ");
+			if (temp == null)
+				heuristic = 0;
+			else
+				heuristic = temp;
+			if (heuristic == bestH) {
+				goodmoves += "" + i;
+			}
+			if (heuristic > bestH) {
+				bestH = heuristic;
+				goodmoves = "" + i;
+			}
+		}
+		move = (int)(Math.random() * goodmoves.length());
+		move = Integer.parseInt("" + goodmoves.charAt(move));
+		experience.add(data + move + " ");
+		return move;
 	}
 	
 	//Reads from brain file and stores information into brain hashmap.
@@ -83,6 +108,15 @@ public class AIPlayer implements Player {
 		catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
+		}
+	}
+	
+	public void updateData(int[][] board) {
+		data = "";
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				data = data + board[i][j] + " ";
+			}
 		}
 	}
 }
