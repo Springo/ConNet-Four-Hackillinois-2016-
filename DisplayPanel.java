@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class DisplayPanel extends JPanel{
 	int [] [] pieces;
+	boolean isHuman = false;
 
 	public DisplayPanel(){
 		setBackground(Color.white);

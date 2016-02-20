@@ -2,7 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class ConNetFour extends JPanel{
+public class ConNetFour{
 	Player player1;
 	Player player2;
 	int [][] board;
@@ -10,13 +10,12 @@ public class ConNetFour extends JPanel{
 	int playerTurn = 1;
 	int movenumber = 0;
 	DisplayPanel canvas;
+	MenuPanel menu;
 	JFrame frame;
-
-	//need images for pieces and board
 	
 	public ConNetFour(){
 		super(new GridLayout(1,0));
-		player1 = new DefaultPlayer("player1");
+		player1 = new HumanPlayer("");
 		player2 = new AIPlayer("Janice");
 		board = new int [6][7];
 		for (int i = 0; i < 6; i++)
