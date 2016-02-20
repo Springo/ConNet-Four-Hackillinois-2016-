@@ -119,4 +119,12 @@ public class AIPlayer implements Player {
 			}
 		}
 	}
+	
+	public void won(boolean result) {
+		for (int i = 0; i < experience.size(); i++) {
+			if (brain.containsKey(experience.get(i))) {
+				
+			}
+		}
+	}
 }
