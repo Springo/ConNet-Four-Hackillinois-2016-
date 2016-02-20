@@ -75,14 +75,16 @@ public class ConNetFour extends JPanel{
 		for (int i = 5; i >= 0; i--){
 			if (board[i][col] == 0){
 				board[i][col] = playerTurn;
-				i=6;
+				System.out.println(i + ", " + col);
+				i=-1;
+				canvas.update(board);
 				canvas.repaint();
 				checkForWinner(i, col);
 			}
 		}
 	}
 	
-	public void checkForWinner(int row, int col){
+	public void checkForWinner(int row, int col){// check is board is full - > draw  (at the end of this method)
 		//check in every dir from that point for a 4 in a row
 		//ughidshfodsihfodsifhds
 		//check the row
