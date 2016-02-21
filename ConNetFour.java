@@ -81,9 +81,11 @@ public class ConNetFour{
 		frame.setIconImage(new ImageIcon("defaultIcon.png").getImage());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		JLabel display = new JLabel("OH hELLO");
 		canvas = new DisplayPanel();
 		frame.setJMenuBar(createMenuBar());
-		frame.getContentPane().add(canvas);
+		frame.getContentPane().add(display, BorderLayout.NORTH);
+		frame.getContentPane().add(canvas, BorderLayout.CENTER);
 
 		//frame.pack();
 		frame.setVisible(true);
@@ -92,10 +94,14 @@ public class ConNetFour{
 	public JMenuBar createMenuBar(){
 		JMenuBar menuBar  = new JMenuBar();
 		JMenu start = new JMenu("Start");
+		JMenu custom = new JMenu("Customize");
+		JMenuItem reset = new JMenu("Reset AI");
 		JMenuItem newAi = new JMenuItem("AI vs AI");
 		JMenuItem newHuman = new JMenuItem("Play against AI");
 
 		menuBar.add(start);
+		menuBar.add(custom);
+		menuBar.add(reset);
 		start.add(newAi);
 		start.add(newHuman);
 
