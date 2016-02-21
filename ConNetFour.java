@@ -14,7 +14,7 @@ public class ConNetFour{
 	
 	public ConNetFour(){
 		//super(new GridLayout(1,0));
-		player1 = new HumanPlayer("Kevin");
+		player1 = new AIPlayer("Kevin");
 		player2 = new AIPlayer("Janice");
 		board = new int [6][7];
 		for (int i = 0; i < 6; i++)
@@ -39,7 +39,7 @@ public class ConNetFour{
 	public void play(){
 		createGUI();
 		int col = 0;
-		canvas.repaint();
+		//canvas.repaint();
 		while (winner.equals("")){
 			if (playerTurn == 1)
 			{
@@ -57,7 +57,7 @@ public class ConNetFour{
 				updateBoard(col);
 				playerTurn--;
 			}
-			printBoard();
+			//printBoard();
 		}
 		System.out.println("WINNER! Player " + winner);
 		if (movenumber >= 42) {
@@ -74,6 +74,7 @@ public class ConNetFour{
 				player2.won(1);
 			}
 		}
+		//frame.dispose();
 	}
 	
 	public void createGUI(){
@@ -107,7 +108,7 @@ public class ConNetFour{
 		for (int i = 5; i >= 0; i--){
 			if (board[i][col] == 0){
 				board[i][col] = playerTurn;
-				System.out.println(i + ", " + col);
+				//System.out.println(i + ", " + col);
 				canvas.update(board);
 				canvas.repaint();
 				checkForWinner(i, col);

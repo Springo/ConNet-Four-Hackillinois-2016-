@@ -7,7 +7,7 @@ public class DisplayPanel extends JPanel{
 	boolean isHuman = false;
 
 	public DisplayPanel(){
-		setBackground(Color.white);
+		setBackground(Color.black);
 		pieces = new int [7][6];
 	}
 

@@ -26,7 +26,7 @@ public class HumanPlayer implements Player{
 		Object[] allowedValues = new Object[numMoves];
 		numMoves = 0;
 		for (int i = 0; i < possibleValues.length; i++) {
-			if (((String)possibleValues[i]).equals(0)) {
+			if (((String)possibleValues[i]).equals("0")) {
 				continue;
 			}
 			else {
@@ -36,7 +36,7 @@ public class HumanPlayer implements Player{
 		}
 		Object selectedValue;
 		do {
-			selectedValue = JOptionPane.showInputDialog(null, "Choose a column: ", name + "'s Move", JOptionPane.INFORMATION_MESSAGE, null, possibleValues, possibleValues[0]);
+			selectedValue = JOptionPane.showInputDialog(null, "Choose a column: ", name + "'s Move", JOptionPane.INFORMATION_MESSAGE, null, allowedValues, allowedValues[0]);
 		} while (selectedValue == null);
 		return Integer.parseInt((String)selectedValue) - 1;
 	}
