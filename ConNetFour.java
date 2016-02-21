@@ -14,7 +14,7 @@ public class ConNetFour{
 	
 	public ConNetFour(){
 		//super(new GridLayout(1,0));
-		player1 = new DefaultPlayer("");
+		player1 = new HumanPlayer("Kevin");
 		player2 = new AIPlayer("Janice");
 		board = new int [6][7];
 		for (int i = 0; i < 6; i++)
@@ -39,6 +39,7 @@ public class ConNetFour{
 	public void play(){
 		createGUI();
 		int col = 0;
+		canvas.repaint();
 		while (winner.equals("")){
 			if (playerTurn == 1)
 			{
