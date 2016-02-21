@@ -10,12 +10,11 @@ public class ConNetFour{
 	int playerTurn = 1;
 	int movenumber = 0;
 	DisplayPanel canvas;
-	MenuPanel menu;
 	JFrame frame;
 	
 	public ConNetFour(){
-		super(new GridLayout(1,0));
-		player1 = new HumanPlayer("");
+		//super(new GridLayout(1,0));
+		player1 = new DefaultPlayer("");
 		player2 = new AIPlayer("Janice");
 		board = new int [6][7];
 		for (int i = 0; i < 6; i++)
@@ -83,13 +82,26 @@ public class ConNetFour{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		canvas = new DisplayPanel();
-	
+		frame.setJMenuBar(createMenuBar());
 		frame.getContentPane().add(canvas);
 
 		//frame.pack();
 		frame.setVisible(true);
 	}
 
+	public JMenuBar createMenuBar(){
+		JMenuBar menuBar  = new JMenuBar();
+		JMenu start = new JMenu("Start");
+		JMenuItem newAi = new JMenuItem("AI vs AI");
+		JMenuItem newHuman = new JMenuItem("Play against AI");
+
+		menuBar.add(start);
+		start.add(newAi);
+		start.add(newHuman);
+
+		return menuBar;
+	}
+	
 	public void updateBoard(int col){
 		for (int i = 5; i >= 0; i--){
 			if (board[i][col] == 0){
