@@ -13,12 +13,13 @@ public class ConNetFour implements ActionListener{
 	JFrame frame;
 	JLabel display;
 	int numGames = 0;
-	int repeats = 1;
-	
+	int repeats = -1;
+	int mode = 0;
+
 	public ConNetFour(){
 		//super(new GridLayout(1,0));
-		display = new JLabel("he y ");
-		player1 = new HumanPlayer("Kevin");
+		display = new JLabel("Use the start menu to select a gamemode!");
+		player1 = new HumanPlayer("Human");
 		player2 = new AIPlayer("Janice");
 		board = new int [6][7];
 		for (int i = 0; i < 6; i++)
@@ -39,7 +40,7 @@ public class ConNetFour implements ActionListener{
 
 	public static void main(String [] args){
 		ConNetFour newgame = new ConNetFour();
-			newgame.play();
+		newgame.play();
 	}
 	
 	public void printBoard() {
@@ -51,9 +52,12 @@ public class ConNetFour implements ActionListener{
 		}
 	}
 	
+	
 	public void play(){
+		while (true) {
 		int col = 0;
-		//canvas.repaint();
+
+		canvas.repaint();
 		while (numGames < repeats){
 		for (int i = 0; i < 6; i++)
 			for (int j = 0; j < 7; j++)
@@ -61,7 +65,24 @@ public class ConNetFour implements ActionListener{
 		winner = "";
 		movenumber = 0;
 		playerTurn = 1;
+		if (mode == 0 || mode == 1) {
+			player1 = new AIPlayer("Kevin");
+			player2 = new AIPlayer("Janice");
+		}
+		else {
+			player1 = new HumanPlayer("Kevin");
+			player2 = new AIPlayer("Janice");
+		}
+			DisplayPanel.unclick();
 			while (winner.equals("")){
+						if (mode == 0)
+		{
+			try{
+				Thread.sleep(500);
+			}catch(InterruptedException ex){
+				System.out.println("exception happened!");
+			}
+		}
 				canvas.repaint();
 				if (playerTurn == 1)
 				{
@@ -113,15 +134,20 @@ public class ConNetFour implements ActionListener{
 			if (playerTurn == 2){
 				player1.won(1);
 				player2.won(-1);
+	display.setText("Player 1 Wins!");
 			}
 			else{
 				player1.won(-1);
 				player2.won(1);
+		
+	display.setText("Player 2 Wins!");
 			}
 		}
 		}
-
+		
 	}
+	}
+
 	
 	public void createGUI(){
 		frame = new JFrame ("GameBoard");
@@ -129,7 +155,6 @@ public class ConNetFour implements ActionListener{
 		frame.setIconImage(new ImageIcon("defaultIcon.png").getImage());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		display.setText("OH hELLO");
 		canvas = new DisplayPanel();
 		frame.setJMenuBar(createMenuBar());
 		frame.getContentPane().add(display, BorderLayout.NORTH);
@@ -142,9 +167,11 @@ public class ConNetFour implements ActionListener{
 	public JMenuBar createMenuBar(){
 		JMenuBar menuBar  = new JMenuBar();
 		JMenu start = new JMenu("Start");
-		JMenu custom = new JMenu("Customize");
-		JMenuItem reset = new JMenu("Reset AI");
 		JMenu newAi = new JMenu("AI vs AI");
+		JMenu about = new JMenu("About");
+		JMenuItem janice = new JMenuItem("JANICE SPENT FOREVER ON THIS GUI");
+		JMenuItem kevin = new JMenuItem("KEVIN SPENT LIKE 10 MINUTES ON HIS ALGORITHM");
+		JMenuItem nikhil = new JMenuItem("NIKHIL'S ART IS DOPE");
 		JMenuItem one = new JMenuItem("1 round");
 		JMenuItem hundred = new JMenuItem("100 rounds");
 		JMenuItem newHuman = new JMenuItem("Play against AI");
@@ -152,11 +179,12 @@ public class ConNetFour implements ActionListener{
 		one.addActionListener(this);
 		hundred.addActionListener(this);
 		newHuman.addActionListener(this);
-		reset.addActionListener(this);
 		
 		menuBar.add(start);
-		menuBar.add(custom);
-		menuBar.add(reset);
+		menuBar.add(about);
+		about.add(janice);
+		about.add(kevin);
+		about.add(nikhil);
 		start.add(newAi);
 		newAi.add(one);
 		newAi.add(hundred);
@@ -168,17 +196,29 @@ public class ConNetFour implements ActionListener{
        		JMenuItem source = (JMenuItem)(e.getSource());
        		String s = source.getText();
 		if (s.equals("1 round")){
+			
+		display.setText("Game in Progress");
+			mode = 0;
 			repeats = 1;
 			reset();
-			this.play();
 		}
 		else if (s.equals("100 rounds")){
+			
+		display.setText("Game in Progress");
+			mode = 1;
 			repeats = 100;
 			reset();
-			this.play();
 		}
-		display.setText(s);
+		else if (s.equals("Play against AI")){
+		
+		display.setText("Game in Progress");
+			mode = 2;
+			repeats = 1;
+			reset();
+		}
+		
         }
+
 	public void updateBoard(int col){
 		for (int i = 5; i >= 0; i--){
 			if (board[i][col] == 0){
