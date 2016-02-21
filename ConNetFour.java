@@ -14,7 +14,7 @@ public class ConNetFour{
 	
 	public ConNetFour(){
 		//super(new GridLayout(1,0));
-		player1 = new DefaultPlayer("");
+		player1 = new DefaultPlayer("Kevin");
 		player2 = new AIPlayer("Janice");
 		board = new int [6][7];
 		for (int i = 0; i < 6; i++)
