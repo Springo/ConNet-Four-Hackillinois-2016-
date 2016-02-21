@@ -20,37 +20,16 @@ public class AIPlayer implements Player {
 		getBrain(name + "Brain.txt");
 	}
 	
-	//Following methods only for testing.
-	public static void main(String [] args) {
-		AIPlayer p = new AIPlayer("Bob");
-		p.addnew("0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ", -3);
-		p.addnew("0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 ", 3);
-		p.addnew("0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 ", -3);
-		p.writeBrain(p.getName() + "Brain.txt");
-		p.getBrain(p.getName() + "Brain.txt");
-		int[][] testboard = new int[6][7];
-		p.updateData(testboard);
-		System.out.println(p.makeMove());
-	}
-	
-	public void addnew(String key, int input) {
-		brain.put(key, input);
-	}
-	
-	public Integer getMap(String key) {
-		return brain.get(key);
-	}
-	//End test methods.
-	
 	public String getName() {
 		return name;
 	}
 	
 	public int makeMove() {
-		int heuristic = 0;
-		int bestH = -99999;
-		int move = 0;
-		String goodmoves = "";
+		int heuristic = 0;	//quality of move
+		int bestH = -99999;	//best move option
+		int move = 0;	//chosen move
+		String goodmoves = "";	//list of moves of best options
+		//chooses moves of highest heuristic values
 		for (int i = 0; i < 7; i++) {
 			if (Integer.parseInt("" + data.charAt(2 * i)) != 0)
 				continue;
@@ -67,8 +46,10 @@ public class AIPlayer implements Player {
 				goodmoves = "" + i;
 			}
 		}
+		//assigns move to random selection out of best options
 		move = (int)(Math.random() * goodmoves.length());
 		move = Integer.parseInt("" + goodmoves.charAt(move));
+		//adds move to list of experience
 		experience.add(data + move + " ");
 		return move;
 	}
@@ -120,6 +101,7 @@ public class AIPlayer implements Player {
 	}
 	
 	public void updateData(int[][] board) {
+		//converts given data into a String
 		data = "";
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {
@@ -129,7 +111,8 @@ public class AIPlayer implements Player {
 	}
 	
 	public void won(int result) {
-		//System.out.println(result);
+		//rewrites brain with new experience
+		//updates existing nodes, adds new ones
 		for (int i = 0; i < experience.size(); i++) {
 			String key = experience.get(i);
 			if (brain.containsKey(key)) {

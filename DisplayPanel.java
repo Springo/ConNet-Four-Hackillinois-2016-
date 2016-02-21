@@ -50,13 +50,9 @@ public class DisplayPanel extends JPanel implements MouseListener, MouseMotionLi
 		return clicked;
 	}
 	
-	public void mouseClicked(MouseEvent e) {
-		
-	}
+	public void mouseClicked(MouseEvent e) {}
 	
-	public void mousePressed(MouseEvent e) {
-		
-	}
+	public void mousePressed(MouseEvent e) {}
 	
 	public void mouseReleased(MouseEvent e) {
 		chosenmove = (int)((((double)(e.getX()) - scale * 13) - (int)((this.getWidth() - 1600 * scale) / 2)) / (scale * 225));
@@ -68,17 +64,11 @@ public class DisplayPanel extends JPanel implements MouseListener, MouseMotionLi
 			clicked = true;
 	}
 	
-	public void mouseEntered(MouseEvent e) {
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
 	
-	public void mouseExited(MouseEvent e) {
-		
-	}
+	public void mouseExited(MouseEvent e) {}
 	
-	public void mouseDragged(MouseEvent e) {
-		
-	}
+	public void mouseDragged(MouseEvent e) {}
 	
 	public void mouseMoved(MouseEvent e) {
 		slot = (int)((((double)(e.getX()) - scale * 13) - (int)((this.getWidth() - 1600 * scale) / 2)) / (scale * 225));

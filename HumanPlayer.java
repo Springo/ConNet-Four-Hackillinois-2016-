@@ -16,32 +16,6 @@ public class HumanPlayer implements Player{
 
 	public int makeMove(){
 		return DisplayPanel.getChosenMove();
-		/*
-		int numMoves = 7;
-		Object[] possibleValues = { "1", "2", "3", "4", "5", "6", "7" };
-		for (int i = 0; i < 7; i++) {
-			if (board[0][i] != 0) {
-				possibleValues[i] = "0";
-				numMoves--;
-			}
-		}
-		Object[] allowedValues = new Object[numMoves];
-		numMoves = 0;
-		for (int i = 0; i < possibleValues.length; i++) {
-			if (((String)possibleValues[i]).equals("0")) {
-				continue;
-			}
-			else {
-				allowedValues[numMoves] = possibleValues[i];
-				numMoves++;
-			}
-		}
-		Object selectedValue;
-		do {
-			selectedValue = JOptionPane.showInputDialog(null, "Choose a column: ", name + "'s Move", JOptionPane.INFORMATION_MESSAGE, null, allowedValues, allowedValues[0]);
-		} while (selectedValue == null);
-		return Integer.parseInt((String)selectedValue) - 1;
-		*/
 	}
 	
 	public String getName(){

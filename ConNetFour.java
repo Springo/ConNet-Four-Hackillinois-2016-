@@ -43,109 +43,95 @@ public class ConNetFour implements ActionListener{
 		newgame.play();
 	}
 	
-	public void printBoard() {
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[i].length; j++) {
-				System.out.print(board[i][j] + " ");
-			}
-			System.out.println();
-		}
-	}
-	
 	
 	public void play(){
 		while (true) {
-		int col = 0;
-
-		canvas.repaint();
-		while (numGames < repeats){
-		for (int i = 0; i < 6; i++)
-			for (int j = 0; j < 7; j++)
-				board[i][j] = 0;
-		winner = "";
-		movenumber = 0;
-		playerTurn = 1;
-		if (mode == 0 || mode == 1) {
-			player1 = new AIPlayer("Kevin");
-			player2 = new AIPlayer("Janice");
-		}
-		else {
-			player1 = new HumanPlayer("Kevin");
-			player2 = new AIPlayer("Janice");
-		}
-			DisplayPanel.unclick();
-			while (winner.equals("")){
-						if (mode == 0)
-		{
-			try{
-				Thread.sleep(500);
-			}catch(InterruptedException ex){
-				System.out.println("exception happened!");
-			}
-		}
-				canvas.repaint();
-				if (playerTurn == 1)
-				{
-					player1.updateData(board);
-					if (player1 instanceof HumanPlayer) {
-						if (DisplayPanel.isClicked()) {
+			int col = 0;
+			canvas.repaint();
+			while (numGames < repeats){
+				for (int i = 0; i < 6; i++)
+					for (int j = 0; j < 7; j++)
+						board[i][j] = 0;
+				winner = "";
+				movenumber = 0;
+				playerTurn = 1;
+				if (mode == 0 || mode == 1 || mode == 3) {
+					player1 = new AIPlayer("Kevin");
+					player2 = new AIPlayer("Janice");
+				}
+				else {
+					player1 = new HumanPlayer("Kevin");
+					player2 = new AIPlayer("Janice");
+				}
+				DisplayPanel.unclick();
+				while (winner.equals("")){
+					if (mode == 0 || mode == 3)
+					{
+						try{
+							Thread.sleep(500);
+						}catch(InterruptedException ex){
+							System.out.println("exception happened!");
+						}
+					}
+					canvas.repaint();
+					if (playerTurn == 1)
+					{
+						player1.updateData(board);
+						if (player1 instanceof HumanPlayer) {
+							if (DisplayPanel.isClicked()) {
+								movenumber++;
+								col = player1.makeMove();
+								updateBoard(col);
+								playerTurn++;
+								DisplayPanel.unclick();
+							}
+						}
+						else {
 							movenumber++;
 							col = player1.makeMove();
 							updateBoard(col);
 							playerTurn++;
-							DisplayPanel.unclick();
 						}
 					}
-					else {
-						movenumber++;
-						col = player1.makeMove();
-						updateBoard(col);
-						playerTurn++;
-					}
-				}
-				else
-				{
-					player2.updateData(board);
-					if (player2 instanceof HumanPlayer) {
-						if (DisplayPanel.isClicked()) {
+					else
+					{
+						player2.updateData(board);
+						if (player2 instanceof HumanPlayer) {
+							if (DisplayPanel.isClicked()) {
+								movenumber++;
+								col = player2.makeMove();
+								updateBoard(col);
+								playerTurn--;
+								DisplayPanel.unclick();
+							}
+						}
+						else {
 							movenumber++;
 							col = player2.makeMove();
 							updateBoard(col);
 							playerTurn--;
-							DisplayPanel.unclick();
 						}
 					}
-					else {
-						movenumber++;
-						col = player2.makeMove();
-						updateBoard(col);
-						playerTurn--;
+				}
+				numGames++;
+				if (movenumber >= 42) {
+					player1.won(0);
+					player2.won(0);
+				}
+				else {
+					if (playerTurn == 2){
+						player1.won(1);
+						player2.won(-1);
+						display.setText("Player 1 Wins!");
+					}
+					else{
+						player1.won(-1);
+						player2.won(1);
+						display.setText("Player 2 Wins!");
 					}
 				}
-				//printBoard();
-			}
-			numGames++;
-	
-		if (movenumber >= 42) {
-			player1.won(0);
-			player2.won(0);
-		}
-		else {
-			if (playerTurn == 2){
-				player1.won(1);
-				player2.won(-1);
-	display.setText("Player 1 Wins!");
-			}
-			else{
-				player1.won(-1);
-				player2.won(1);
-		
-	display.setText("Player 2 Wins!");
 			}
 		}
-		}
-		
-	}
 	}
 
 	
@@ -175,9 +161,11 @@ public class ConNetFour implements ActionListener{
 		JMenuItem one = new JMenuItem("1 round");
 		JMenuItem hundred = new JMenuItem("100 rounds");
 		JMenuItem newHuman = new JMenuItem("Play against AI");
+		JMenuItem forever = new JMenuItem("Forever Loop");
 		
 		one.addActionListener(this);
 		hundred.addActionListener(this);
+		forever.addActionListener(this);
 		newHuman.addActionListener(this);
 		
 		menuBar.add(start);
@@ -188,6 +176,7 @@ public class ConNetFour implements ActionListener{
 		start.add(newAi);
 		newAi.add(one);
 		newAi.add(hundred);
+		newAi.add(forever);
 		start.add(newHuman);
 
 		return menuBar;
@@ -214,6 +203,12 @@ public class ConNetFour implements ActionListener{
 		display.setText("Game in Progress");
 			mode = 2;
 			repeats = 1;
+			reset();
+		}
+		else if (s.equals("Forever Loop")) {
+			display.setText("Game in Progress");
+			mode = 3;
+			repeats = 10000;
 			reset();
 		}
 		
