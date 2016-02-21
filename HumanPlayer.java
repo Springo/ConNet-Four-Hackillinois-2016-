@@ -34,8 +34,9 @@ public class HumanPlayer implements Player{
 				numMoves++;
 			}
 		}
+		Object selectedValue;
 		do {
-			Object selectedValue = JOptionPane.showInputDialog(null, "Choose a column: ", name + "'s Move", JOptionPane.INFORMATION_MESSAGE, null, possibleValues, possibleValues[0]);
+			selectedValue = JOptionPane.showInputDialog(null, "Choose a column: ", name + "'s Move", JOptionPane.INFORMATION_MESSAGE, null, possibleValues, possibleValues[0]);
 		} while (selectedValue == null);
 		return Integer.parseInt((String)selectedValue) - 1;
 	}
