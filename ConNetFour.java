@@ -18,7 +18,7 @@ public class ConNetFour implements ActionListener{
 	public ConNetFour(){
 		//super(new GridLayout(1,0));
 		display = new JLabel("he y ");
-		player1 = new AIPlayer("Kevin");
+		player1 = new HumanPlayer("Kevin");
 		player2 = new AIPlayer("Janice");
 		board = new int [6][7];
 		for (int i = 0; i < 6; i++)
@@ -62,21 +62,44 @@ public class ConNetFour implements ActionListener{
 		movenumber = 0;
 		playerTurn = 1;
 			while (winner.equals("")){
+				canvas.repaint();
 				if (playerTurn == 1)
 				{
 					player1.updateData(board);
-					col = player1.makeMove();
-					movenumber++;
-					updateBoard(col);
-					playerTurn++;
+					if (player1 instanceof HumanPlayer) {
+						if (DisplayPanel.isClicked()) {
+							movenumber++;
+							col = player1.makeMove();
+							updateBoard(col);
+							playerTurn++;
+							DisplayPanel.unclick();
+						}
+					}
+					else {
+						movenumber++;
+						col = player1.makeMove();
+						updateBoard(col);
+						playerTurn++;
+					}
 				}
 				else
 				{
 					player2.updateData(board);
-					col = player2.makeMove();
-					movenumber++;
-					updateBoard(col);
-					playerTurn--;
+					if (player2 instanceof HumanPlayer) {
+						if (DisplayPanel.isClicked()) {
+							movenumber++;
+							col = player2.makeMove();
+							updateBoard(col);
+							playerTurn--;
+							DisplayPanel.unclick();
+						}
+					}
+					else {
+						movenumber++;
+						col = player2.makeMove();
+						updateBoard(col);
+						playerTurn--;
+					}
 				}
 				//printBoard();
 			}
