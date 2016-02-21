@@ -2,7 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class ConNetFour{
+public class ConNetFour implements ActionListener{
 	Player player1;
 	Player player2;
 	int [][] board;
@@ -11,20 +11,35 @@ public class ConNetFour{
 	int movenumber = 0;
 	DisplayPanel canvas;
 	JFrame frame;
+	JLabel display;
+	int numGames = 0;
+	int repeats = 1;
 	
 	public ConNetFour(){
 		//super(new GridLayout(1,0));
+		display = new JLabel("he y ");
 		player1 = new AIPlayer("Kevin");
 		player2 = new AIPlayer("Janice");
 		board = new int [6][7];
 		for (int i = 0; i < 6; i++)
 			for (int j = 0; j < 7; j++)
 				board[i][j] = 0;
+		createGUI();
+	}
+
+	public void reset(){
+		numGames = 0;
+		for (int i = 0; i < 6; i++)
+			for (int j = 0; j < 7; j++)
+				board[i][j] = 0;
+		winner = "";
+		movenumber = 0;
+		playerTurn = 1;
 	}
 
 	public static void main(String [] args){
 		ConNetFour newgame = new ConNetFour();
-		newgame.play();
+			newgame.play();
 	}
 	
 	public void printBoard() {
@@ -37,29 +52,36 @@ public class ConNetFour{
 	}
 	
 	public void play(){
-		createGUI();
 		int col = 0;
 		//canvas.repaint();
-		while (winner.equals("")){
-			if (playerTurn == 1)
-			{
-				player1.updateData(board);
-				col = player1.makeMove();
-				movenumber++;
-				updateBoard(col);
-				playerTurn++;
+		while (numGames < repeats){
+		for (int i = 0; i < 6; i++)
+			for (int j = 0; j < 7; j++)
+				board[i][j] = 0;
+		winner = "";
+		movenumber = 0;
+		playerTurn = 1;
+			while (winner.equals("")){
+				if (playerTurn == 1)
+				{
+					player1.updateData(board);
+					col = player1.makeMove();
+					movenumber++;
+					updateBoard(col);
+					playerTurn++;
+				}
+				else
+				{
+					player2.updateData(board);
+					col = player2.makeMove();
+					movenumber++;
+					updateBoard(col);
+					playerTurn--;
+				}
+				//printBoard();
 			}
-			else
-			{
-				player2.updateData(board);
-				col = player2.makeMove();
-				movenumber++;
-				updateBoard(col);
-				playerTurn--;
-			}
-			//printBoard();
-		}
-		System.out.println("WINNER! Player " + winner);
+			numGames++;
+	
 		if (movenumber >= 42) {
 			player1.won(0);
 			player2.won(0);
@@ -74,7 +96,8 @@ public class ConNetFour{
 				player2.won(1);
 			}
 		}
-		//frame.dispose();
+		}
+
 	}
 	
 	public void createGUI(){
@@ -83,7 +106,7 @@ public class ConNetFour{
 		frame.setIconImage(new ImageIcon("defaultIcon.png").getImage());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JLabel display = new JLabel("OH hELLO");
+		display.setText("OH hELLO");
 		canvas = new DisplayPanel();
 		frame.setJMenuBar(createMenuBar());
 		frame.getContentPane().add(display, BorderLayout.NORTH);
@@ -98,18 +121,41 @@ public class ConNetFour{
 		JMenu start = new JMenu("Start");
 		JMenu custom = new JMenu("Customize");
 		JMenuItem reset = new JMenu("Reset AI");
-		JMenuItem newAi = new JMenuItem("AI vs AI");
+		JMenu newAi = new JMenu("AI vs AI");
+		JMenuItem one = new JMenuItem("1 round");
+		JMenuItem hundred = new JMenuItem("100 rounds");
 		JMenuItem newHuman = new JMenuItem("Play against AI");
-
+		
+		one.addActionListener(this);
+		hundred.addActionListener(this);
+		newHuman.addActionListener(this);
+		reset.addActionListener(this);
+		
 		menuBar.add(start);
 		menuBar.add(custom);
 		menuBar.add(reset);
 		start.add(newAi);
+		newAi.add(one);
+		newAi.add(hundred);
 		start.add(newHuman);
 
 		return menuBar;
 	}
-	
+	public void actionPerformed(ActionEvent e) {
+       		JMenuItem source = (JMenuItem)(e.getSource());
+       		String s = source.getText();
+		if (s.equals("1 round")){
+			repeats = 1;
+			reset();
+			this.play();
+		}
+		else if (s.equals("100 rounds")){
+			repeats = 100;
+			reset();
+			this.play();
+		}
+		display.setText(s);
+        }
 	public void updateBoard(int col){
 		for (int i = 5; i >= 0; i--){
 			if (board[i][col] == 0){
@@ -123,15 +169,7 @@ public class ConNetFour{
 		}
 	}
 	
-	public void checkForWinner(int row, int col){// check is board is full - > draw  (at the end of this method)
-		//check in every dir from that point for a 4 in a row
-		//ughidshfodsihfodsifhds
-		//check the row
-		//check the col
-		//check diag in both directions
-		//if (turnOne){
-	//	}
-		//else
+	public void checkForWinner(int row, int col){
 		int side = board[row][col];
 		int combo = 1;
 		for (int i = 1; i < 4; i++) {
